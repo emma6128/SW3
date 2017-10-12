@@ -17,7 +17,7 @@ GPIO.setwarnings(False)
 PinPIR = 17
 PinRedLED = 18
 PinBlueLED = 24
-PinBuzzer = 22
+# PinBuzzer = 22
 
 print("PIR Module Test (Ctrl-C to exit)")
 
@@ -25,7 +25,7 @@ print("PIR Module Test (Ctrl-C to exit)")
 GPIO.setup(PinPIR, GPIO.IN)
 GPIO.setup(PinRedLED, GPIO.OUT)
 GPIO.setup(PinBlueLED, GPIO.OUT)
-GPIO.setup(PinBuzzer, GPIO.OUT)
+# GPIO.setup(PinBuzzer, GPIO.OUT)
 
 # Variables to hold current and last states
 Current_State = 0
@@ -48,9 +48,11 @@ try:
         if Current_State == 1 and Previous_State == 0:
             print("Motion detected!")
             # Turn on lights and sound buzzer
-            GPIO.output(PinBuzzer, GPIO.HIGH)
+            # GPIO.output(PinBuzzer, GPIO.HIGH)
             GPIO.output(PinRedLED, GPIO.HIGH)
             GPIO.output(PinBlueLED, GPIO.HIGH)
+
+            time.sleep(1)
 
             # Play random wav file from wav folder
             mixer.init()
@@ -67,9 +69,12 @@ try:
 
             # Turn LEDs and Buzzer off
             GPIO.output(PinBlueLED, GPIO.LOW)
-            GPIO.output(PinBuzzer, GPIO.LOW)
+            # GPIO.output(PinBuzzer, GPIO.LOW)
             GPIO.output(PinRedLED, GPIO.LOW)
-
+            
+            # Delay before PIR sensor reinitialises
+            time.sleep(30)
+            
             # Record previous state
             Previous_State = 1
 
