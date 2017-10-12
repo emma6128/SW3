@@ -1,9 +1,14 @@
-# CamJam Edukit 2 - Sensors
-# Worksheet 6 - Alarm
+#!/usr/bin/env python
+# Halloween Ghost
 
-#Import Python header files
+import os
+from pygame import mixer
+import random
 import RPi.GPIO as GPIO
 import time
+
+# set up assets folders
+snd_dir = os.path.join(os.path.dirname(__file__), "wav")
 
 # Set the GPIO naming convention
 GPIO.setmode(GPIO.BCM)
@@ -29,41 +34,57 @@ Previous_State = 0
 try:
     print("Waiting for PIR to settle ...")
     # Loop until PIR output is zero
-    while GPIO.input(PinPIR)==1:
+    while GPIO.input(PinPIR) == 1:
         Current_State = 0
-        
+
     print("Ready")
-    
+
     # Loop until user quits with Ctrl-C
     while True:
         # Read PIR state
         Current_State = GPIO.input(PinPIR)
-        
+
         # If the PIR is triggered
-        if Current_State==1 and Previous_State==0:
+        if Current_State == 1 and Previous_State == 0:
             print("Motion detected!")
             # Turn on lights and sound buzzer
             GPIO.output(PinBuzzer, GPIO.HIGH)
             GPIO.output(PinRedLED, GPIO.HIGH)
             GPIO.output(PinBlueLED, GPIO.HIGH)
-            time.sleep(5)
+
+            # Play random wav file from wav folder
+            mixer.init()
+            randomfile = random.choice(os.listdir(snd_dir))  # randomly choose wav file
+            print(randomfile)  # debug
+            file = snd_dir + "/" + randomfile
+            print(file)  # debug
+            a = mixer.Sound(file)
+            print("length", a.get_length())  # debug
+            mixer.Sound.play(mixer.Sound(file))  # Play selected wav file
+
+            # Waits for the length of the sound + 1 second
+            time.sleep(a.get_length() + 1)
+
+            # Turn LEDs and Buzzer off
             GPIO.output(PinBlueLED, GPIO.LOW)
             GPIO.output(PinBuzzer, GPIO.LOW)
             GPIO.output(PinRedLED, GPIO.LOW)
-                
+
             # Record previous state
-            Previous_State=1
-            
+            Previous_State = 1
+
         # If the PIR has returned to ready state
-        elif Current_State==0 and Previous_State==1:
+        elif Current_State == 0 and Previous_State == 1:
             print("Ready")
-            Previous_State=0
-            
+            Previous_State = 0
+
         # Wait for 10 milliseconds
         time.sleep(0.01)
-        
+
 except KeyboardInterrupt:
     print("Quit")
-    
+
     # Reset GPIO settings
     GPIO.cleanup()
+
+quit()
