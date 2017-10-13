@@ -11,25 +11,70 @@ import time
 snd_dir = os.path.join(os.path.dirname(__file__), "wav")
 
 # Set the GPIO naming convention
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
-PinPIR = 17
-PinRedLED = 18
-PinBlueLED = 24
-# PinBuzzer = 22
+PinPIR = 22
+bluePin = 11
+bluePin1 = 12
+greenPin = 13
+greenPin1 = 16
+redPin = 15
+redPin1 = 18
 
 print("PIR Module Test (Ctrl-C to exit)")
 
 # Set pin as input/output
 GPIO.setup(PinPIR, GPIO.IN)
-GPIO.setup(PinRedLED, GPIO.OUT)
-GPIO.setup(PinBlueLED, GPIO.OUT)
+# GPIO.setup(PinRedLED, GPIO.OUT)
+# GPIO.setup(PinBlueLED, GPIO.OUT)
 # GPIO.setup(PinBuzzer, GPIO.OUT)
 
 # Variables to hold current and last states
 Current_State = 0
 Previous_State = 0
+
+def turnOff(pin):
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.HIGH)
+
+
+def blink(pin):
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.LOW)
+
+
+def redOn():
+    blink(redPin)
+    blink(redPin1)
+
+
+def greenOn():
+    blink(greenPin)
+    blink(greenPin1)
+
+
+def blueOn():
+    blink(bluePin)
+    blink(bluePin1)
+
+
+def redOff():
+    turnOff(redPin)
+    turnOff(redPin1)
+
+
+def greenOff():
+    turnOff(greenPin)
+    turnOff(greenPin1)
+
+
+def blueOff():
+    turnOff(bluePin)
+    turnOff(bluePin1)
+
 
 try:
     print("Waiting for PIR to settle ...")
@@ -49,9 +94,15 @@ try:
             print("Motion detected!")
             # Turn on lights and sound buzzer
             # GPIO.output(PinBuzzer, GPIO.HIGH)
-            GPIO.output(PinRedLED, GPIO.HIGH)
-            GPIO.output(PinBlueLED, GPIO.HIGH)
-
+            # GPIO.output(PinRedLED, GPIO.HIGH)
+            # GPIO.output(PinBlueLED, GPIO.HIGH)
+            
+            # change to random colour
+            redOn()
+            greenOn()
+            blueOn()
+            print("LEDs On")
+                        
             time.sleep(1)
 
             # Play random wav file from wav folder
@@ -68,9 +119,10 @@ try:
             time.sleep(a.get_length() + 1)
 
             # Turn LEDs and Buzzer off
-            GPIO.output(PinBlueLED, GPIO.LOW)
-            # GPIO.output(PinBuzzer, GPIO.LOW)
-            GPIO.output(PinRedLED, GPIO.LOW)
+            redOff()
+            greenOff()
+            blueOff()
+            print("LEDs Off")
             
             # Delay before PIR sensor reinitialises
             time.sleep(30)
