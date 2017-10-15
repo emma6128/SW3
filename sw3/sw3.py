@@ -14,66 +14,63 @@ snd_dir = os.path.join(os.path.dirname(__file__), "wav")
 GPIO.setmode(GPIO.BOARD)
 GPIO.setwarnings(False)
 
-PinPIR = 22
+PinPIR = 12
 bluePin = 11
-bluePin1 = 12
+# bluePin1 = 12
 greenPin = 13
-greenPin1 = 16
+# greenPin1 = 16
 redPin = 15
-redPin1 = 18
+# redPin1 = 18
 
 print("PIR Module Test (Ctrl-C to exit)")
 
 # Set pin as input/output
 GPIO.setup(PinPIR, GPIO.IN)
-# GPIO.setup(PinRedLED, GPIO.OUT)
-# GPIO.setup(PinBlueLED, GPIO.OUT)
-# GPIO.setup(PinBuzzer, GPIO.OUT)
 
 # Variables to hold current and last states
 Current_State = 0
 Previous_State = 0
 
 def turnOff(pin):
-    GPIO.setmode(GPIO.BOARD)
+    # GPIO.setmode(GPIO.BOARD)
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
 
 
 def blink(pin):
-    GPIO.setmode(GPIO.BOARD)
+    # GPIO.setmode(GPIO.BOARD)
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
 
 
 def redOn():
     blink(redPin)
-    blink(redPin1)
+    # blink(redPin1)
 
 
 def greenOn():
     blink(greenPin)
-    blink(greenPin1)
+    # blink(greenPin1)
 
 
 def blueOn():
     blink(bluePin)
-    blink(bluePin1)
+    # blink(bluePin1)
 
 
 def redOff():
     turnOff(redPin)
-    turnOff(redPin1)
+    # turnOff(redPin1)
 
 
 def greenOff():
     turnOff(greenPin)
-    turnOff(greenPin1)
+    # turnOff(greenPin1)
 
 
 def blueOff():
     turnOff(bluePin)
-    turnOff(bluePin1)
+    # turnOff(bluePin1)
 
 
 try:
@@ -92,11 +89,7 @@ try:
         # If the PIR is triggered
         if Current_State == 1 and Previous_State == 0:
             print("Motion detected!")
-            # Turn on lights and sound buzzer
-            # GPIO.output(PinBuzzer, GPIO.HIGH)
-            # GPIO.output(PinRedLED, GPIO.HIGH)
-            # GPIO.output(PinBlueLED, GPIO.HIGH)
-            
+                       
             # change to random colour
             redOn()
             greenOn()
@@ -118,7 +111,7 @@ try:
             # Waits for the length of the sound + 1 second
             time.sleep(a.get_length() + 1)
 
-            # Turn LEDs and Buzzer off
+            # Turn LEDs off
             redOff()
             greenOff()
             blueOff()
