@@ -31,46 +31,81 @@ GPIO.setup(PinPIR, GPIO.IN)
 Current_State = 0
 Previous_State = 0
 
+
 def turnOff(pin):
-    # GPIO.setmode(GPIO.BOARD)
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
 
 
 def blink(pin):
-    # GPIO.setmode(GPIO.BOARD)
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
 
 
 def redOn():
     blink(redPin)
-    # blink(redPin1)
 
 
 def greenOn():
     blink(greenPin)
-    # blink(greenPin1)
 
 
 def blueOn():
     blink(bluePin)
-    # blink(bluePin1)
+
+
+def yellowOn():
+    blink(redPin)
+    blink(greenPin)
+
+
+def magentaOn():
+    blink(bluePin)
+    blink(redPin)
+
+
+def cyanOn():
+    blink(bluePin)
+    blink(greenPin)
+
+
+def whiteOn():
+    blink(redPin)
+    blink(greenPin)
+    blink(bluePin)
 
 
 def redOff():
     turnOff(redPin)
-    # turnOff(redPin1)
 
 
 def greenOff():
     turnOff(greenPin)
-    # turnOff(greenPin1)
 
 
 def blueOff():
     turnOff(bluePin)
-    # turnOff(bluePin1)
+
+
+def yellowOff():
+    blink(redPin)
+    blink(greenPin)
+
+
+def magentaOff():
+    blink(bluePin)
+    blink(redPin)
+
+
+def cyanOff():
+    blink(bluePin)
+    blink(greenPin)
+
+
+def whiteOff():
+    blink(redPin)
+    blink(greenPin)
+    blink(bluePin)
 
 
 try:
@@ -89,18 +124,21 @@ try:
         # If the PIR is triggered
         if Current_State == 1 and Previous_State == 0:
             print("Motion detected!")
-                       
-            # change to random colour
-            redOn()
-            greenOn()
-            blueOn()
+
+            # select a random colour
+            colourlist = [redOn, greenOn, blueOn, yellowOn,
+                          magentaOn, cyanOn, whiteOn]
+            randColour = random.choice(colourlist)
+            print(randColour)
+            randColour()
             print("LEDs On")
-                        
+
             time.sleep(1)
 
             # Play random wav file from wav folder
             mixer.init()
-            randomfile = random.choice(os.listdir(snd_dir))  # randomly choose wav file
+            # randomly choose wav file
+            randomfile = random.choice(os.listdir(snd_dir))
             print(randomfile)  # debug
             file = snd_dir + "/" + randomfile
             print(file)  # debug
@@ -112,14 +150,27 @@ try:
             time.sleep(a.get_length() + 1)
 
             # Turn LEDs off
-            redOff()
-            greenOff()
-            blueOff()
+            if randColour == redOn:
+                redOff()
+            elif randColour == greenOn:
+                greenOff()
+            elif randColour == blueOn:
+                blueOff()
+            elif randColour == yellowOn:
+                yellowOff()
+            elif randColour == magentaOn:
+                magentaOff()
+            elif randColour == cyanOn:
+                cyanOff()
+            elif randColour == whiteOn:
+                whiteOff()
+            else:
+                print("err in colour turnOff")
             print("LEDs Off")
-            
+
             # Delay before PIR sensor reinitialises
             time.sleep(30)
-            
+
             # Record previous state
             Previous_State = 1
 
