@@ -88,24 +88,24 @@ def blueOff():
 
 
 def yellowOff():
-    blink(redPin)
-    blink(greenPin)
+    turnOff(redPin)
+    turnOff(greenPin)
 
 
 def magentaOff():
-    blink(bluePin)
-    blink(redPin)
+    turnOff(bluePin)
+    turnOff(redPin)
 
 
 def cyanOff():
-    blink(bluePin)
-    blink(greenPin)
+    turnOff(bluePin)
+    turnOff(greenPin)
 
 
 def whiteOff():
-    blink(redPin)
-    blink(greenPin)
-    blink(bluePin)
+    turnOff(redPin)
+    turnOff(greenPin)
+    turnOff(bluePin)
 
 
 try:
@@ -169,7 +169,7 @@ try:
             print("LEDs Off")
 
             # Delay before PIR sensor reinitialises
-            time.sleep(30)
+            time.sleep(10)
 
             # Record previous state
             Previous_State = 1
